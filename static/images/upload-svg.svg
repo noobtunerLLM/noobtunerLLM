@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="uploadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="20" fill="white" stroke="#e5e7eb" stroke-width="2"/>
+  <path d="M30 70 L90 70 L90 90 L30 90 Z" fill="url(#uploadGradient)" opacity="0.1"/>
+  <path d="M60 30 L60 60 M45 45 L60 30 L75 45" stroke="url(#uploadGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 80 L85 80" stroke="url(#uploadGradient)" stroke-width="4" stroke-linecap="round"/>
+</svg>

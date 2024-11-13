@@ -1,0 +1,21 @@
+.gradient-bg {
+    background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+}
+
+.floating-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+.step-card img {
+    transition: transform 0.3s ease;
+}
+
+.step-card:hover img {
+    transform: scale(1.1);
+}

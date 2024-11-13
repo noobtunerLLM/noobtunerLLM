@@ -1,0 +1,256 @@
+<!-- templates/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Dashboard - noobtunerLLM{% endblock %}
+
+{% block extra_css %}
+<style>
+    .method-card {
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .method-card.selected {
+        border-color: #6B46C1;
+        background-color: #F5F3FF;
+    }
+
+    .loading-overlay {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(4px);
+    }
+
+    .progress-bar {
+        transition: width 0.3s ease;
+    }
+
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Dashboard Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Fine-tuning Dashboard</h1>
+            <p class="mt-2 text-gray-600">Configure and monitor your fine-tuning jobs</p>
+        </div>
+        <div class="flex space-x-4">
+            <a href="#" class="flex items-center text-gray-600 hover:text-purple-600">
+                <img src="{{ url_for('static', path='/images/docs.svg') }}" alt="Documentation" class="w-5 h-5 mr-2">
+                Documentation
+            </a>
+            <a href="https://huggingface.co" target="_blank" class="flex items-center text-gray-600 hover:text-purple-600">
+                <img src="{{ url_for('static', path='/images/huggingface.svg') }}" alt="HuggingFace" class="w-5 h-5 mr-2">
+                HuggingFace
+            </a>
+        </div>
+    </div>
+
+    <!-- Method Selection -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4">Select Fine-tuning Method</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Full Fine-tuning Card -->
+            <div class="method-card rounded-lg p-4 cursor-pointer hover:shadow-lg" data-method="full">
+                <div class="flex items-center mb-3">
+                    <img src="{{ url_for('static', path='/images/full-tune.svg') }}" alt="Full" class="w-8 h-8 mr-3">
+                    <h3 class="text-lg font-semibold">Full Fine-tuning</h3>
+                </div>
+                <p class="text-sm text-gray-600">Complete model adaptation for maximum performance</p>
+            </div>
+
+            <!-- LoRA Card -->
+            <div class="method-card rounded-lg p-4 cursor-pointer hover:shadow-lg" data-method="lora">
+                <div class="flex items-center mb-3">
+                    <img src="{{ url_for('static', path='/images/lora.svg') }}" alt="LoRA" class="w-8 h-8 mr-3">
+                    <h3 class="text-lg font-semibold">LoRA</h3>
+                </div>
+                <p class="text-sm text-gray-600">Memory-efficient adaptation with rank decomposition</p>
+            </div>
+
+            <!-- QLoRA Card -->
+            <div class="method-card rounded-lg p-4 cursor-pointer hover:shadow-lg" data-method="qlora">
+                <div class="flex items-center mb-3">
+                    <img src="{{ url_for('static', path='/images/qlora.svg') }}" alt="QLoRA" class="w-8 h-8 mr-3">
+                    <h3 class="text-lg font-semibold">QLoRA</h3>
+                </div>
+                <p class="text-sm text-gray-600">4-bit quantized training for maximum efficiency</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fine-tuning Configuration -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div class="flex items-center mb-6">
+            <img src="{{ url_for('static', path='/images/settings.svg') }}" alt="Configure" class="w-8 h-8 mr-3">
+            <h2 class="text-xl font-semibold">Configuration</h2>
+        </div>
+
+        <form id="fine-tuning-form" class="space-y-6">
+            <!-- Model Selection -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Base Model</label>
+                    <select name="base_model" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        <option value="llama2">LLaMA 2</option>
+                        <option value="mistral">Mistral</option>
+                        <option value="phi">Phi-2</option>
+                        <option value="custom">Custom Model</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Training Type</label>
+                    <select name="training_type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        <option value="sft">Supervised Fine-tuning (SFT)</option>
+                        <option value="dpo">Direct Preference Optimization (DPO)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Training Parameters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Learning Rate
+                        <span class="text-gray-400 text-xs ml-1" data-tooltip="Recommended: 1e-5 to 1e-4">(?)</span>
+                    </label>
+                    <input type="number" name="learning_rate" value="0.00002" step="0.00001"
+                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Epochs
+                        <span class="text-gray-400 text-xs ml-1" data-tooltip="Recommended: 3-5 epochs">(?)</span>
+                    </label>
+                    <input type="number" name="epochs" value="3" min="1"
+                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Batch Size
+                        <span class="text-gray-400 text-xs ml-1" data-tooltip="Adjust based on your GPU memory">(?)</span>
+                    </label>
+                    <input type="number" name="batch_size" value="8" min="1"
+                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Gradient Accumulation
+                        <span class="text-gray-400 text-xs ml-1" data-tooltip="Simulate larger batch sizes">(?)</span>
+                    </label>
+                    <input type="number" name="gradient_accumulation" value="4" min="1"
+                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                </div>
+            </div>
+
+            <!-- Advanced Options Toggle -->
+            <div>
+                <button type="button" id="advanced-toggle" class="text-purple-600 hover:text-purple-700 text-sm flex items-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                    Advanced Options
+                </button>
+                
+                <div id="advanced-options" class="hidden mt-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Weight Decay</label>
+                            <input type="number" name="weight_decay" value="0.01" step="0.01"
+                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Warmup Steps</label>
+                            <input type="number" name="warmup_steps" value="100"
+                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Steps</label>
+                            <input type="number" name="max_steps" value="1000"
+                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Upload -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Training Data</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-purple-500 transition-colors">
+                    <div class="space-y-1 text-center">
+                        <img src="{{ url_for('static', path='/images/upload.svg') }}" alt="Upload" class="mx-auto h-12 w-12 text-gray-400 floating">
+                        <div class="flex text-sm text-gray-600">
+                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500">
+                                <span>Upload a file</span>
+                                <input id="file-upload" name="file" type="file" accept=".json,.csv" class="sr-only">
+                            </label>
+                            <p class="pl-1">or drag and drop</p>
+                        </div>
+                        <p class="text-xs text-gray-500">JSON or CSV files up to 10MB</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                    Save Configuration
+                </button>
+                <button type="submit" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition flex items-center">
+                    <img src="{{ url_for('static', path='/images/play.svg') }}" alt="Start" class="w-4 h-4 mr-2">
+                    Start Fine-tuning
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Active Jobs -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+                <img src="{{ url_for('static', path='/images/jobs.svg') }}" alt="Jobs" class="w-8 h-8 mr-3">
+                <h2 class="text-xl font-semibold">Active Jobs</h2>
+            </div>
+            <button class="text-gray-600 hover:text-purple-600" id="refresh-jobs">
+                <img src="{{ url_for('static', path='/images/refresh.svg') }}" alt="Refresh" class="w-5 h-5">
+            </button>
+        </div>
+
+        <div id="active-jobs" class="space-y-4">
+            <!-- Jobs will be inserted here by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="fixed inset-0 hidden loading-overlay flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center">
+        <img src="{{ url_for('static', path='/images/loading.svg') }}" alt="Loading" class="w-16 h-16 mb-4">
+        <p class="text-gray-700" id="loading-message">Starting fine-tuning process...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.fineTuningUI) {
+            window.fineTuningUI.initialize();
+        }
+    });
+</script>
+{% endblock %}

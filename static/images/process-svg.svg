@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <defs>
+    <linearGradient id="processGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <!-- Process steps -->
+  <circle cx="40" cy="50" r="20" fill="white" stroke="url(#processGradient)" stroke-width="3"/>
+  <circle cx="100" cy="50" r="20" fill="white" stroke="url(#processGradient)" stroke-width="3"/>
+  <circle cx="160" cy="50" r="20" fill="white" stroke="url(#processGradient)" stroke-width="3"/>
+  
+  <!-- Connecting arrows -->
+  <path d="M60 50 L80 50 M120 50 L140 50" stroke="url(#processGradient)" stroke-width="3"/>
+  <path d="M75 45 L80 50 L75 55" stroke="url(#processGradient)" stroke-width="3"/>
+  <path d="M135 45 L140 50 L135 55" stroke="url(#processGradient)" stroke-width="3"/>
+  
+  <!-- Step numbers -->
+  <text x="40" y="55" text-anchor="middle" font-size="16" fill="url(#processGradient)">1</text>
+  <text x="100" y="55" text-anchor="middle" font-size="16" fill="url(#processGradient)">2</text>
+  <text x="160" y="55" text-anchor="middle" font-size="16" fill="url(#processGradient)">3</text>
+</svg>

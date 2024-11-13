@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <!-- Brain outline -->
+  <path d="M30 60 C30 40, 50 30, 60 30 C70 30, 90 40, 90 60 C90 80, 70 90, 60 90 C50 90, 30 80, 30 60" 
+        fill="none" stroke="url(#brainGradient)" stroke-width="4"/>
+  
+  <!-- Neural connections -->
+  <circle cx="45" cy="50" r="3" fill="url(#brainGradient)"/>
+  <circle cx="75" cy="50" r="3" fill="url(#brainGradient)"/>
+  <circle cx="60" cy="70" r="3" fill="url(#brainGradient)"/>
+  
+  <path d="M45 50 L75 50 L60 70 Z" stroke="url(#brainGradient)" stroke-width="2" fill="none"/>
+  
+  <!-- Pulse circles -->
+  <circle cx="60" cy="60" r="25" stroke="url(#brainGradient)" stroke-width="1" fill="none" opacity="0.2">
+    <animate attributeName="r" from="25" to="35" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" from="0.2" to="0" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</svg>
