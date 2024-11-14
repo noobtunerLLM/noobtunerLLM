@@ -1,13 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-  <defs>
-    <linearGradient id="deployGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#667eea"/>
-      <stop offset="100%" style="stop-color:#764ba2"/>
-    </linearGradient>
-  </defs>
-  <rect x="20" y="20" width="80" height="80" rx="10" fill="white" stroke="#e5e7eb" stroke-width="2"/>
-  <path d="M40 60 L80 60" stroke="url(#deployGradient)" stroke-width="4" stroke-linecap="round"/>
-  <path d="M65 45 L80 60 L65 75" stroke="url(#deployGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="40" cy="40" r="8" fill="url(#deployGradient)"/>
-  <circle cx="80" cy="80" r="8" fill="url(#deployGradient)"/>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Smoke particles -->
+  <g>
+    <circle cx="45" cy="85" r="3" fill="#CBD5E1">
+      <animate attributeName="cy" values="85;95" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="55" cy="85" r="4" fill="#CBD5E1">
+      <animate attributeName="cy" values="85;100" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="50" cy="90" r="3.5" fill="#CBD5E1">
+      <animate attributeName="cy" values="90;105" dur="1.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Rocket group with vertical animation -->
+  <g>
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="0 20;0 -10"
+                      dur="2s"
+                      repeatCount="indefinite"/>
+    
+    <!-- Rocket body -->
+    <path d="M50 10 
+             L65 40
+             L65 70
+             L50 65
+             L35 70
+             L35 40 Z" 
+          fill="#8B5CF6" 
+          stroke="#4C1D95" 
+          stroke-width="2"/>
+    
+    <!-- Window -->
+    <circle cx="50" cy="35" r="8" fill="#C4B5FD"/>
+    
+    <!-- Wings -->
+    <path d="M65 40 L80 55 L65 55 Z" fill="#8B5CF6" stroke="#4C1D95" stroke-width="2"/>
+    <path d="M35 40 L20 55 L35 55 Z" fill="#8B5CF6" stroke="#4C1D95" stroke-width="2"/>
+    
+    <!-- Animated flames -->
+    <path d="M45 70 L50 90 L55 70">
+      <animate attributeName="d" 
+               values="M45 70 L50 85 L55 70;M45 70 L50 95 L55 70;M45 70 L50 85 L55 70" 
+               dur="0.3s" 
+               repeatCount="indefinite"/>
+      <animate attributeName="fill" 
+               values="#F59E0B;#FCD34D;#F59E0B" 
+               dur="0.3s" 
+               repeatCount="indefinite"/>
+    </path>
+  </g>
 </svg>
