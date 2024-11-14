@@ -25,10 +25,8 @@
         backdrop-filter: blur(8px);
         background: rgba(255, 255, 255, 0.95);
         transition: all 0.3s ease;
-        border-width: 4px; /* Increase the border width from the default 1px */
-        border-style: solid; /* Ensure the border is set to solid */
     }
-    
+
     .feature-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -76,41 +74,6 @@
         justify-content: center;
         font-weight: bold;
     }
-    
-
-    @keyframes blink {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
-      }
-      
-      .animate-blink {
-        animation: blink 1.5s infinite;
-      }
-    
-    .hero-logo {
-        backdrop-filter: blur(8px);
-        background: rgba(255, 255, 255, 0.3); /* Increased opacity for better visibility */
-        padding: 1rem;
-        border-radius: 1rem;
-        box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Stronger shadow for better contrast */
-        border: 2px solid rgba(255, 255, 255, 0.5); /* Subtle white border to make it pop */
-        transition: all 0.3s ease-in-out; /* Smooth transition for hover effects */
-    }
-      
-      /* Blinking effect */
-    @keyframes blink {
-          0% { opacity: 1; }
-          50% { opacity: 0; }
-          100% { opacity: 1; }
-      }
-      
-      /* Apply blinking animation to the logo */
-    .hero-logo {
-          animation: blink 7s infinite; /* Apply blinking effect */
-      }
-      
-
 </style>
 {% endblock %}
 
@@ -123,49 +86,48 @@
         const ctx = canvas.getContext('2d');
         let nodes = [];
         let connections = [];
-    
+
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-    
+
         function createNodes() {
             nodes = [];
-            for(let i = 0; i < 75; i++) { // Increase the number of nodes
+            for(let i = 0; i < 50; i++) {
                 nodes.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: (Math.random() - 0.5) * 3, // Increase the velocity range
-                    vy: (Math.random() - 0.5) * 3
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2
                 });
             }
         }
-    
+
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)'; // Increase the line opacity
-            ctx.lineWidth = 2; // Increase the line width
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; // Increase the node opacity
-    
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+
             nodes.forEach(node => {
                 node.x += node.vx;
                 node.y += node.vy;
-    
-                if(node.x < 0 || node.x > canvas.width) node.vx *= -1.1; // Increase the bounce effect
-                if(node.y < 0 || node.y > canvas.height) node.vy *= -1.1;
-    
+
+                if(node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if(node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 4, 0, Math.PI * 2); // Increase the node size
+                ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
                 ctx.fill();
             });
-    
+
             nodes.forEach((node1, i) => {
                 nodes.slice(i + 1).forEach(node2 => {
                     const dx = node2.x - node1.x;
                     const dy = node2.y - node1.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
-    
-                    if(distance < 200) { // Increase the connection distance
+
+                    if(distance < 150) {
                         ctx.beginPath();
                         ctx.moveTo(node1.x, node1.y);
                         ctx.lineTo(node2.x, node2.y);
@@ -173,18 +135,18 @@
                     }
                 });
             });
-    
+
             requestAnimationFrame(animate);
         }
-    
+
         window.addEventListener('resize', resize);
         resize();
         createNodes();
         animate();
-    
+
         return canvas;
     }
-    
+
     document.addEventListener('DOMContentLoaded', () => {
         const heroSection = document.querySelector('.gradient-bg');
         heroSection.appendChild(createNeuralAnimation());
@@ -194,9 +156,7 @@
 <!-- Hero Section -->
 <div class="gradient-bg">
     <div class="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8 relative z-10">
-        <img src="{{ url_for('static', path='/images/logo-svg.svg') }}" 
-             alt="noobtunerLLM Logo" 
-             class="mx-auto h-24 mb-8 hero-logo"> 
+        <img src="{{ url_for('static', path='/images/logo.svg') }}" alt="noobtunerLLM Logo" class="mx-auto h-24 mb-8">
 
         <div class="text-center">
             <h1 class="text-5xl font-extrabold text-white sm:text-6xl md:text-7xl mb-8 pulse">
@@ -211,13 +171,6 @@
                     Start Fine-tuning Now
                 </a>
             </div>
-                        <!-- Downward blinking arrow -->
-                        <div class="mt-8 text-center">
-                            <svg class="down-arrow animate-bounce mx-auto w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m0 0l-4-4m4 4l4-4"/>
-                            </svg>
-                        </div>
-                        
         </div>
     </div>
 </div>
@@ -231,10 +184,9 @@
             <!-- Step 1 -->
             <div class="step-card">
                 <div class="step-number">1</div>
-                <h3 class="text-xl font-semibold mb-4">Dataset Selection</h3>
-                <p class="text-gray-600">Please provide the name of your preferred dataset from Hugging Face. </p>
-
-                <img src="{{ url_for('static', path='/images/upload-svg.svg') }}" alt="Upload" class="mt-4 w-24 mx-auto floating-animation">
+                <h3 class="text-xl font-semibold mb-4">Upload Your Data</h3>
+                <p class="text-gray-600">Drop your training data in JSON or CSV format. We handle the preprocessing.</p>
+                <img src="{{ url_for('static', path='/images/upload.svg') }}" alt="Upload" class="mt-4 w-24 mx-auto floating-animation">
             </div>
 
             <!-- Step 2 -->
@@ -242,7 +194,7 @@
                 <div class="step-number">2</div>
                 <h3 class="text-xl font-semibold mb-4">Configure Model</h3>
                 <p class="text-gray-600">Choose your base model and fine-tuning method. Set parameters or use our optimized defaults.</p>
-                <img src="{{ url_for('static', path='/images/settings-svg.svg') }}" alt="Configure" class="mt-4 w-24 mx-auto floating-animation">
+                <img src="{{ url_for('static', path='/images/settings.svg') }}" alt="Configure" class="mt-4 w-24 mx-auto floating-animation">
             </div>
 
             <!-- Step 3 -->
@@ -250,7 +202,7 @@
                 <div class="step-number">3</div>
                 <h3 class="text-xl font-semibold mb-4">Deploy</h3>
                 <p class="text-gray-600">Download your model or push directly to Hugging Face with one click.</p>
-                <img src="{{ url_for('static', path='/images/deploy-svg.svg') }}" alt="Deploy" class="mt-4 w-24 mx-auto floating-animation">
+                <img src="{{ url_for('static', path='/images/deploy.svg') }}" alt="Deploy" class="mt-4 w-24 mx-auto floating-animation">
             </div>
         </div>
     </div>
@@ -436,38 +388,27 @@
 </div>
 
 <!-- Footer -->
-<footer class="bg-gray-900 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="bg-white border-t border-gray-200">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Logo and Tagline -->
             <div class="col-span-2 flex items-center space-x-3">
-                <img src="{{ url_for('static', path='/images/logo-svg.svg') }}" alt="Logo" class="h-10 w-10 logo-dark">
+                <svg class="h-10 w-10 text-purple-500" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
+                    <path d="M30 50 L70 50" stroke="currentColor" stroke-width="2"/>
+                    <path d="M50 30 L50 70" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="10" fill="currentColor"/>
+                </svg>
                 <span class="text-2xl font-bold text-white">noobtunerLLM</span>
             </div>
 
-            <!-- Resources Section -->
+            <!-- Quick Links -->
             <div>
                 <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Resources</h3>
                 <ul class="mt-4 space-y-4">
-                    <li><a href="#" class="flex items-center text-gray-300 hover:text-purple-400 transition duration-300">
-                        <svg class="h-5 w-5 mr-2 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM8 9h4a1 1 0 110 2H8a1 1 0 110-2zm-1 5h6a1 1 0 010 2H7a1 1 0 010-2z"/></svg>
-                        Documentation</a></li>
-                    <li><a href="#" class="flex items-center text-gray-300 hover:text-purple-400 transition duration-300">
-                        <svg class="h-5 w-5 mr-2 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9h2v2H9V9zm0 4h2v2H9v-2z"/></svg>
-                        Tutorials</a></li>
-                    <li><a href="#" class="flex items-center text-gray-300 hover:text-purple-400 transition duration-300">
-                        <svg class="h-5 w-5 mr-2 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 7h2v4H9V7zm0 6h2v2H9v-2z"/></svg>
-                        API Reference</a></li>
-                </ul>
-            </div>
-
-            <!-- Company Section -->
-            <div>
-                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
-                <ul class="mt-4 space-y-4">
-                    <li><a href="#" class="text-gray-300 hover:text-purple-400 transition duration-300">About Us</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-purple-400 transition duration-300">Careers</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-purple-400 transition duration-300">Contact</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-purple-600">Documentation</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-purple-600">Tutorials</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-purple-600">API Reference</a></li>
                 </ul>
             </div>
 
@@ -475,7 +416,7 @@
             <div>
                 <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Connect</h3>
                 <div class="mt-4 flex space-x-6">
-                    <a href="https://github.com/noobtunerLLM/noobtunerLLM" class="text-gray-400 hover:text-purple-400 transition duration-300">
+                    <a href="#" class="text-gray-400 hover:text-purple-600">
                         <span class="sr-only">GitHub</span>
                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
@@ -484,11 +425,11 @@
                 </div>
             </div>
         </div>
-        <div class="mt-8 border-t border-gray-700 pt-8 text-center">
-            <p class="text-gray-500 text-sm">© 2024 noobtunerLLM. All rights reserved.</p>
+
+        <!-- Copyright -->
+        <div class="mt-8 border-t border-gray-200 pt-8 text-center">
+            <p class="text-gray-400">&copy; 2024 noobtunerLLM. All rights reserved.</p>
         </div>
     </div>
 </footer>
-
-
 {% endblock %}

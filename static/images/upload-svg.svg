@@ -1,14 +1,12 @@
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- Folder background -->
-  <rect x="20" y="80" width="160" height="90" fill="#8B5CF6" rx="10" ry="10"/>
-
-  <!-- Folder tab -->
-  <path d="M20 80 Q40 60, 70 60 H130 Q140 60, 160 80 H180 V100 H20 Z" fill="#8B5CF6" />
-
-  <!-- Outline for folder (optional for more definition) -->
-  <rect x="20" y="80" width="160" height="90" rx="10" ry="10" fill="none" stroke="#000000" stroke-width="3"/>
-  <path d="M20 80 Q40 60, 70 60 H130 Q140 60, 160 80 H180 V100 H20 Z" fill="none" stroke="#000000" stroke-width="3"/>
-
-  <!-- 🤗 Emoji -->
-  <text x="100" y="135" font-size="50" text-anchor="middle" alignment-baseline="middle">🤗</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="uploadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="20" fill="white" stroke="#e5e7eb" stroke-width="2"/>
+  <path d="M30 70 L90 70 L90 90 L30 90 Z" fill="url(#uploadGradient)" opacity="0.1"/>
+  <path d="M60 30 L60 60 M45 45 L60 30 L75 45" stroke="url(#uploadGradient)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 80 L85 80" stroke="url(#uploadGradient)" stroke-width="4" stroke-linecap="round"/>
 </svg>
