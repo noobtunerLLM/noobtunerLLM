@@ -1,12 +1,9 @@
-<!-- templates/base.html -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='/images/favicon.svg') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', path='/images/favicon-svg.svg') }}">
     <title>{% block title %}noobtunerLLM{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
@@ -18,12 +15,42 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="/" class="text-2xl font-bold text-purple-600">noobtunerLLM</a>
+                    <a href="/" class="flex items-center">
+                        <img src="{{ url_for('static', path='/images/logo-svg.svg') }}" alt="Logo" class="h-8 w-8 mr-2">
+                        <span class="text-2xl font-bold text-purple-600">noobtunerLLM</span>
+                    </a>
                 </div>
                 <div class="flex items-center space-x-8">
-                    <a href="/" class="text-gray-600 hover:text-purple-600">Home</a>
-                    <a href="/dashboard" class="text-gray-600 hover:text-purple-600">Dashboard</a>
-                    <a href="#" class="text-gray-600 hover:text-purple-600">Documentation</a>
+                    <a href="/" class="text-gray-600 hover:text-purple-600 font-bold uppercase flex items-center">
+                        <span class="mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z" fill="#4A5568"/>
+                              </svg>
+                              
+                        </span>
+                        Home
+                    </a>
+                    <a href="/dashboard" class="text-gray-600 hover:text-purple-600 font-bold uppercase flex items-center">
+                        <span class="mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <rect x="4" y="4" width="4" height="16" fill="#4A5568"/>
+                                <rect x="10" y="9" width="4" height="11" fill="#4A5568"/>
+                                <rect x="16" y="7" width="4" height="13" fill="#4A5568"/>
+                              </svg>
+                              
+                        </span>
+                        Dashboard
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-purple-600 font-bold uppercase flex items-center">
+                        <span class="mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M6 2h12v20H6V2zm2 2v16h8V4H8zm1 4h6v2H9V8zm0 4h6v2H9v-2zm0 4h6v2H9v-2z" fill="#4A5568"/>
+                              </svg>
+                              
+                        </span>
+                        Documentation
+                    </a>
+                    
                 </div>
             </div>
         </div>
